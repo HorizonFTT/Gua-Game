@@ -34,29 +34,36 @@
             return blocks
         }
 
-        var __main = function () {
-            var game = GuaGame(60)
-            var paused = false
-
-            var paddle = Paddle()
-            var ball = Ball()
-
-            var blocks = loadLevel(1)
-
-            game.registerAction('a', paddle.moveLeft)
-            game.registerAction('d', paddle.moveRight)
-            game.registerAction('f', ball.fire)
-
+        var enableDebugMode = function (enable) {
+            if (!enable) {
+                return
+            }
             window.addEventListener('keydown', function (event) {
                 var key = event.key
                 if (key == 'p') {
                     paused = !paused
                 } else if ('1234567'.includes(key)) {
                     blocks = loadLevel(Number(key))
-                    log('change', blocks)
-
-                } 
+                }
             })
+        }
+
+        var paused = false
+        var blocks = loadLevel(1)
+
+        var __main = function () {
+            enableDebugMode(true)
+
+            var game = GuaGame(60)
+
+            var paddle = Paddle()
+            var ball = Ball()
+
+            
+            game.registerAction('a', paddle.moveLeft)
+            game.registerAction('d', paddle.moveRight)
+            game.registerAction('f', ball.fire)
+
 
             game.update = function () {
                 if (paused) {
