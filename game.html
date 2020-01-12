@@ -11,36 +11,57 @@
             border: 1px black solid;
         }
     </style>
+    <script src="utils.js"></script>
     <script src="guagame.js"></script>
     <script src="paddle.js"></script>
     <script src="ball.js"></script>
     <script src="block.js"></script>
-
+    <script src="level.js"></script>
 </head>
 
 <body>
     <canvas id="paddle" width="400" height="300"></canvas>
     <script>
+        var loadLevel = function (n) {
+            n -= 1
+            var level = levels[n]
+            var blocks = []
+            for (let i = 0; i < level.length; i++) {
+                var p = level[i]
+                var block = Block(p)
+                blocks.push(block)
+            }
+            return blocks
+        }
+
         var __main = function () {
             var game = GuaGame(60)
+            var paused = false
 
             var paddle = Paddle()
             var ball = Ball()
 
-            var blocks = []
-            for (let i = 0; i < 3; i++) {
-                var block = Block()
-                block.x = i * 150
-                block.y = 50
-                blocks.push(block)
-            }
-            var block = Block()
+            var blocks = loadLevel(1)
 
             game.registerAction('a', paddle.moveLeft)
             game.registerAction('d', paddle.moveRight)
             game.registerAction('f', ball.fire)
 
+            window.addEventListener('keydown', function (event) {
+                var key = event.key
+                if (key == 'p') {
+                    paused = !paused
+                } else if ('1234567'.includes(key)) {
+                    blocks = loadLevel(Number(key))
+                    log('change', blocks)
+
+                } 
+            })
+
             game.update = function () {
+                if (paused) {
+                    return
+                }
                 ball.move()
                 if (paddle.collide(ball)) {
                     ball.rebound()
