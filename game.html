@@ -11,6 +11,11 @@
             border: 1px black solid;
         }
     </style>
+    <script src="guagame.js"></script>
+    <script src="paddle.js"></script>
+    <script src="ball.js"></script>
+    <script src="block.js"></script>
+
 </head>
 
 <body>
@@ -24,109 +29,29 @@
             return img
         }
 
-        var Ball = function () {
-            var image = imageFromPath('ball.png')
-            var o = {
-                image: image,
-                x: 100,
-                y: 200,
-                speedX: 10,
-                speedY: 10,
-                fired: false,
-            }
-
-            o.fire = function () {
-                o.fired = true
-            }
-
-            o.move = function () {
-                if (o.fired) {
-                    // log('move')
-                    if (o.x < 0 || o.x > 400) {
-                        o.speedX *= -1
-                    }
-                    if (o.y < 0 || o.y > 300) {
-                        o.speedY *= -1
-                    }
-                    o.x += o.speedX
-                    o.y += o.speedY
+        var rectIntersects = function (a, b) {
+            if (b.y > a.y && b.y < a.y + a.image.height) {
+                if (b.x > a.x && b.x < a.x + a.image.width) {
+                    return true
                 }
             }
-
-            return o
-        }
-
-        var Paddle = function () {
-            var image = imageFromPath('paddle.png')
-            var o = {
-                image: image,
-                x: 100,
-                y: 250,
-                speed: 5,
-            }
-            o.moveLeft = function () {
-                o.x -= o.speed
-            }
-            o.moveRight = function () {
-                o.x += o.speed
-            }
-            o.collide = function (ball) {
-                if (ball.y + ball.image.height > o.y) {
-                    if (ball.x > o.x && ball.x < o.x + o.image.width) {
-                        return true
-                    }
-                }
-                return false
-            }
-            return o
-        }
-
-        var GuaGame = function () {
-            var g = {
-                actions: {},
-                keydowns: {},
-            }
-            var canvas = document.querySelector('#paddle')
-            var context = canvas.getContext('2d')
-            g.canvas = canvas
-            g.context = context
-
-            g.drawImage = function (guaImage) {
-                g.context.drawImage(guaImage.image, guaImage.x, guaImage.y)
-            }
-
-            window.addEventListener('keydown', function (event) {
-                g.keydowns[event.key] = true
-            })
-
-            window.addEventListener('keyup', function (event) {
-                g.keydowns[event.key] = false
-            })
-
-            g.registerAction = function (key, callback) {
-                g.actions[key] = callback
-            }
-
-            setInterval(function () {
-                var actions = Object.keys(g.actions)
-                for (let i = 0; i < actions.length; i++) {
-                    const key = actions[i]
-                    if (g.keydowns[key]) {
-                        g.actions[key]()
-                    }
-                }
-                g.update()
-                g.context.clearRect(0, 0, canvas.width, canvas.height)
-                g.draw()
-            }, 1000 / 30)
-            return g
+            return false
         }
 
         var __main = function () {
-            var game = GuaGame()
+            var game = GuaGame(60)
 
             var paddle = Paddle()
             var ball = Ball()
+
+            var blocks = []
+            for (let i = 0; i < 3; i++) {
+                var block = Block()
+                block.x = i * 150
+                block.y = 50
+                blocks.push(block)
+            }
+            var block = Block()
 
             game.registerAction('a', paddle.moveLeft)
             game.registerAction('d', paddle.moveRight)
@@ -135,17 +60,30 @@
             game.update = function () {
                 ball.move()
                 if (paddle.collide(ball)) {
-                    ball.speedY *= -1
+                    ball.rebound()
+                }
+                for (let i = 0; i < blocks.length; i++) {
+                    const block = blocks[i];
+                    if (block.collide(ball)) {
+                        block.kill()
+                        ball.rebound()
+                    }
+                }
+
+                game.draw = function () {
+                    game.drawImage(paddle)
+                    game.drawImage(ball)
+                    for (let i = 0; i < blocks.length; i++) {
+                        const block = blocks[i];
+                        if (block.alive) {
+                            game.drawImage(block)
+                        }
+                    }
                 }
             }
-
-            game.draw = function () {
-                game.drawImage(paddle)
-                game.drawImage(ball)
-            }
-
         }
-        __main()
+
+        __main() 
     </script>
 </body>
 
