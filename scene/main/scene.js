@@ -1,4 +1,4 @@
-var Scene = function(game) {
+var Scene = function (game) {
     var s = {
         game: game,
     }
@@ -7,20 +7,30 @@ var Scene = function(game) {
     var ball = Ball(game)
 
     var score = 0
+    var level = 1
 
-    var blocks = loadLevel(game, 1)
+    var blocks = loadLevel(game, level)
 
-    game.registerAction('a', function(){
+    game.registerAction('a', function () {
         paddle.moveLeft()
     })
-    game.registerAction('d', function(){
+    game.registerAction('d', function () {
         paddle.moveRight()
     })
-    game.registerAction('f', function(){
+    game.registerAction('f', function () {
         ball.fire()
     })
 
-    s.draw = function() {
+    var levels = ['1', '2', '3']
+    for (let i = 0; i < levels.length; i++) {
+        const element = levels[i];
+        game.registerAction(element, function () {
+            blocks = loadLevel(game, Number(element))
+        })
+    }
+
+
+    s.draw = function () {
         // draw 背景
         game.context.fillStyle = "#554"
         game.context.fillRect(0, 0, 400, 300)
@@ -37,7 +47,7 @@ var Scene = function(game) {
         // draw labels
         game.context.fillText('分数: ' + score, 10, 290)
     }
-    s.update = function() {
+    s.update = function () {
         if (window.paused) {
             return
         }
@@ -69,7 +79,7 @@ var Scene = function(game) {
 
     // mouse event
     var enableDrag = false
-    game.canvas.addEventListener('mousedown', function(event) {
+    game.canvas.addEventListener('mousedown', function (event) {
         var x = event.offsetX
         var y = event.offsetY
         log(x, y, event)
@@ -79,7 +89,7 @@ var Scene = function(game) {
             enableDrag = true
         }
     })
-    game.canvas.addEventListener('mousemove', function(event) {
+    game.canvas.addEventListener('mousemove', function (event) {
         var x = event.offsetX
         var y = event.offsetY
         // log(x, y, 'move')
@@ -89,7 +99,7 @@ var Scene = function(game) {
             ball.y = y
         }
     })
-    game.canvas.addEventListener('mouseup', function(event) {
+    game.canvas.addEventListener('mouseup', function (event) {
         var x = event.offsetX
         var y = event.offsetY
         log(x, y, 'up')
