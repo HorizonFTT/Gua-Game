@@ -2,21 +2,53 @@ class Scene extends GuaScene {
     constructor(game) {
         super(game)
         this.setup()
+        this.setupInputs()
     }
     setup() {
         var g = this.game
+        this.numberOFEnemy = 10
         this.bg = GuaImage.new(g, 'sky')
-        this.cloud = GuaImage.new(g, 'cloud')
-
-        this.player = GuaImage.new(g, 'player')
+        this.cloud = Cloud.new(g)
+        this.player = Player.new(g)
         this.player.x = 100
         this.player.y = 150
 
         this.addElement(this.bg)
         this.addElement(this.cloud)
         this.addElement(this.player)
+
+        this.addEnemys()
+    }
+    addEnemys() {
+        var es = []
+        for (let i = 0; i < this.numberOFEnemy; i++) {
+            var e = Enemy.new(this.game)
+            es.push(e)
+            this.addElement(e)
+        }
+        this.enemys = es
+    }
+    setupInputs() {
+        var g = this.game
+        var s = this
+        g.registerAction('a', function () {
+            s.player.moveLeft()
+        })
+        g.registerAction('d', function () {
+            s.player.moveRight()
+        })
+        g.registerAction('w', function () {
+            s.player.moveUp()
+        })
+        g.registerAction('s', function () {
+            s.player.moveDown()
+        })
+        g.registerAction('j', function () {
+            s.player.fire()
+        })
     }
     update() {
+        super.update()
         this.cloud.y += 1
     }
 }

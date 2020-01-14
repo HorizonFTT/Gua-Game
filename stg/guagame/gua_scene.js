@@ -7,8 +7,9 @@ class GuaScene {
         var i = new this(game)
         return i
     }
-    addElement(element) {
-        this.elements.push(element)
+    addElement(img) {
+        img.scene = this
+        this.elements.push(img)
     }
     draw() {
         for (let i = 0; i < this.elements.length; i++) {
@@ -17,6 +18,9 @@ class GuaScene {
         }
     }
     update() {
-
+        for (let i = 0; i < this.elements.length; i++) {
+            const e = this.elements[i];
+            e.update()
+        }
     }
 }
