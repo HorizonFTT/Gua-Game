@@ -17,9 +17,12 @@ class Scene extends GuaScene {
         this.addElement(this.cloud)
         this.addElement(this.player)
 
-        this.addEnemys()
+        this.addEnemies()
+
+        var ps = GuaParticalSystem.new(this.game)
+        this.addElement(ps)
     }
-    addEnemys() {
+    addEnemies() {
         var es = []
         for (let i = 0; i < this.numberOFEnemy; i++) {
             var e = Enemy.new(this.game)
