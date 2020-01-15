@@ -90,7 +90,7 @@ class Cloud extends GuaImage {
     update() {
         this.speed = config.cloud_speed
         this.y += this.speed
-        if (this.y > 600 || this.y < 0) {
+        if (this.y > 600) {
             this.setup()
         }
     }
