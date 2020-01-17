@@ -17,8 +17,12 @@ class GuaAnimation {
         }
         this.animationName = 'idle'
         this.texture = this.frames()[0]
+        this.w = this.texture.w
+        this.h = this.texture.h
         this.frameIndex = 0
         this.frameCount = 3
+
+        this.flipX = false
     }
     static new(game) {
         return new this(game)
@@ -35,9 +39,23 @@ class GuaAnimation {
         }
     }
     draw() {
-        this.game.drawImage(this)
+        var context = this.game.context
+        if (this.flipX) {
+            context.save()
+
+            var x = this.x + this.w / 2
+            context.translate(x, 0)
+            context.scale(-1, 1)
+            context.translate(-x, 0)
+            context.drawImage(this.texture.image, this.x, this.y)
+
+            context.restore()
+        } else {
+            context.drawImage(this.texture.image, this.x, this.y)
+        }
     }
     move(x, keyStatus) {
+        this.flipX = (x < 0)
         this.x += x
         var animationName = {
             down: 'walk',

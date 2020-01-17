@@ -33,11 +33,11 @@ class SceneTitle extends GuaScene {
         }
         this.skipCount = 4
 
-        var w = GuaAnimation.new(game)
-        w.x = 150
-        w.y = 200
-        this.w = w
-        this.addElement(w)
+        var b = GuaAnimation.new(game)
+        b.x = 100
+        b.y = 300
+        this.b = b
+        this.addElement(b)
 
         this.setupInputs()
         // var ps = GuaParticalSystem.new(game)
@@ -63,11 +63,15 @@ class SceneTitle extends GuaScene {
     }
     setupInputs() {
         var self = this
+        var b = this.b
         self.game.registerAction('a', function (keyStatus) {
-            self.w.move(-2, keyStatus)
+            b.move(-2, keyStatus)
         })
         self.game.registerAction('d', function (keyStatus) {
-            self.w.move(2, keyStatus)
+            b.move(2, keyStatus)
+        })
+        self.game.registerAction('j', function (keyStatus) {
+            b.jump()
         })
     }
     // draw() {
