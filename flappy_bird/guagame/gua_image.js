@@ -6,6 +6,10 @@ class GuaImage {
         this.w = this.texture.w
         this.h = this.texture.h
         this.game = game
+
+        this.flipX = false
+        this.flipY = false
+        this.rotation = 0
     }
     static new(game, name) {
         var i = new this(game, name)

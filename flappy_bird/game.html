@@ -28,45 +28,23 @@
     <script src='scene/title/scene_title.js'></script>
     <!-- 关卡数据 -->
     <script src='level.js'></script>
+    <!-- 配置数据 -->
+    <script src='config.js'></script>
 </head>
 
 <body>
     <canvas id="id-canvas" width="400" height="600"></canvas>
     <hr>
-    <input id=id-input-speed type="range" value="30">
+    <div>
+        <input id=id-input-speed type="range" value="30">
+        fps
+    </div>
     <div class="">
         <!-- <textarea id="id-text-log" rows="20" cols="50"></textarea> -->
     </div>
-    <div>
-        <label>
-            <input class="gua-auto-slider" type="range" data-value="config.player_speed">
-            player speed: <span class="gua-label"></span>
-        </label>
+    <div class="gua-controls">
     </div>
-    <div>
-        <label>
-            <input class="gua-auto-slider" type="range" min="-10" max="10" data-value="config.cloud_speed">
-            cloud speed: <span class="gua-label"></span>
-        </label>
-    </div>
-    <div>
-        <label>
-            <input class="gua-auto-slider" type="range" data-value="config.enemy_speed">
-            enemy speed: <span class="gua-label"></span>
-        </label>
-    </div>
-    <div>
-        <label>
-            <input class="gua-auto-slider" type="range" data-value="config.bullet_speed">
-            bullet speed: <span class="gua-label"></span>
-        </label>
-    </div>
-    <div>
-        <label>
-            <input class="gua-auto-slider" type="range" max="20" data-value="config.cooldown">
-            bullet cooldown: <span class="gua-label"></span>
-        </label>
-    </div>
+
     <script src=main.js></script>
     <script>
         var es = sel => document.querySelectorAll(sel)
@@ -81,15 +59,48 @@
             }
         }
 
-        bindAll('.gua-auto-slider', 'input', function (event) {
-            var target = event.target
-            var bindVar = target.dataset.value
-            var v = target.value
-            log(target.dataset, v)
-            eval(bindVar + '=' + v)
-            var label = target.closest('label').querySelector('.gua-label')
-            label.innerText = v
-        })
+        var templateControl = function (key, item) {
+            var i = item
+            var t = `
+            <div>
+                <label>
+                    <input class="gua-auto-slider" type="range" max=300
+                    value="${item.value}" data-value="config.${key}">
+                    ${item._comment} <span class="gua-label"></span>
+                </label>
+            </div>
+            `
+            return t
+        }
+
+        var insertControls = function () {
+            var keys = Object.keys(config)
+            for (const k of keys) {
+                var div = e('.gua-controls')
+                var item = config[k]
+                var html = templateControl(k, item)
+                div.insertAdjacentHTML('beforeend', html)
+            }
+        }
+
+        var bindEvents = function () {
+            bindAll('.gua-auto-slider', 'input', function (event) {
+                var target = event.target
+                var bindVar = target.dataset.value
+                var v = target.value
+                eval(bindVar + '.value = ' + v)
+                var label = target.closest('label').querySelector('.gua-label')
+                label.innerText = v
+            })
+        }
+
+        var __main = function () {
+            insertControls()
+
+            bindEvents()
+        }
+
+        __main()
     </script>
 </body>
 

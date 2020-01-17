@@ -35,31 +35,8 @@ var enableDebugMode = function (game, enable) {
 
 var __main = function () {
     var images = {
-        bullet: 'img/bullet.png',
-        sky: 'img/sky.png',
-        cloud: 'img/cloud.png',
-        player: 'img/player.png',
-        enemy0: 'img/enemy0.png',
-        enemy1: 'img/enemy1.png',
-        enemy2: 'img/enemy2.png',
-        enemy3: 'img/enemy3.png',
-        enemy4: 'img/enemy4.png',
-        fire: 'img/fire.png',
-
-        idle0: 'img/player-idle/0.png',
-        idle1: 'img/player-idle/1.png',
-        idle2: 'img/player-idle/2.png',
-        idle3: 'img/player-idle/3.png',
-        walk0: 'img/player-walk/0.png',
-        walk1: 'img/player-walk/1.png',
-        walk2: 'img/player-walk/2.png',
-        walk3: 'img/player-walk/3.png',
-        walk4: 'img/player-walk/4.png',
-        walk5: 'img/player-walk/5.png',
-        walk6: 'img/player-walk/6.png',
-        walk7: 'img/player-walk/7.png',
-
         bg: 'img/bird/bg.png',
+        pipe: 'img/bird/pipe.png',
         ground: "img/bird/ground.png",
         b0: 'img/bird/b0.png',
         b1: 'img/bird/b1.png',

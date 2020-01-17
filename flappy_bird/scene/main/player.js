@@ -1,11 +1,3 @@
-const config = {
-    player_speed: 10,
-    cloud_speed: 1,
-    enemy_speed: randomBetween(2, 5),
-    bullet_speed: 5,
-    cooldown: 5,
-}
-
 class Player extends GuaImage {
     constructor(game) {
         super(game, 'player')
