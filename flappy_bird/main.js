@@ -1,4 +1,4 @@
-var loadLevel = function(game, n) {
+var loadLevel = function (game, n) {
     n = n - 1
     var level = levels[n]
     var blocks = []
@@ -10,12 +10,12 @@ var loadLevel = function(game, n) {
     return blocks
 }
 
-var enableDebugMode = function(game, enable) {
-    if(!enable) {
+var enableDebugMode = function (game, enable) {
+    if (!enable) {
         return
     }
     window.paused = false
-    window.addEventListener('keydown', function(event){
+    window.addEventListener('keydown', function (event) {
         var k = event.key
         if (k == 'p') {
             // 暂停功能
@@ -26,14 +26,14 @@ var enableDebugMode = function(game, enable) {
         }
     })
     // 控制速度
-    document.querySelector('#id-input-speed').addEventListener('input', function(event) {
+    document.querySelector('#id-input-speed').addEventListener('input', function (event) {
         var input = event.target
         // log(event, input.value)
         window.fps = Number(input.value)
     })
 }
 
-var __main = function() {
+var __main = function () {
     var images = {
         bullet: 'img/bullet.png',
         sky: 'img/sky.png',
@@ -58,8 +58,14 @@ var __main = function() {
         walk5: 'img/player-walk/5.png',
         walk6: 'img/player-walk/6.png',
         walk7: 'img/player-walk/7.png',
+
+        bg: 'img/bird/bg.png',
+        ground: "img/bird/ground.png",
+        b0: 'img/bird/b0.png',
+        b1: 'img/bird/b1.png',
+        b2: 'img/bird/b2.png',
     }
-    var game = GuaGame.instance(30, images, function(g){
+    var game = GuaGame.instance(30, images, function (g) {
         // var s = Scene.new(g)
         var s = SceneTitle.new(g)
         g.runWithScene(s)
